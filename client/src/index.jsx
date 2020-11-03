@@ -3,18 +3,25 @@ import ReactDOM from "react-dom";
 
 var staticCows = [{'name':'Buttercup', 'description':'a herbaceous plant with bright yellow cup-shaped flowers, common in grassland and as a garden weed. All kinds are poisonous, and generally avoided by livestock'}, {'name':'Daisey', 'description':'a small grassland plant that has flowers with a yellow disk and white rays. It has given rise to many ornamental garden varieties'}];
 
-var Cow = ({cow}) => (
+var CurrentCow = ({cow}) => (
+  <div>
+  <h3> {cow.name} </h3>
+  <p> {cow.description} </p>
+  </div>
+);
 
-    <div>
+var Cow = ({cow, handleCowChange}) => (
+
+    <div onClick={() => {handleCowChange(cow)}}>
       {cow.name}
     </div>
 );
 
-var CowList = ({cows}) => (
+var CowList = ({cows, handleCowChange}) => (
   // props should be array of cows
   <div>
     {cows.map((cow) => (
-      <Cow cow={cow} />
+      <Cow cow={cow} handleCowChange={handleCowChange} />
     ))}
   </div>
 )
@@ -66,7 +73,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cows: staticCows
+      cows: staticCows,
+      currentCow: staticCows[0]
     }
   }
 
@@ -77,11 +85,18 @@ class App extends React.Component {
     console.log(this.state.cows);
   }
 
+  handleCowChange(cow) {
+    this.setState({currentCow: cow});
+  }
+
   render() {
     return (
     <div>
+    <CurrentCow cow={this.state.currentCow} />
+
     <CowAdd handleFormSubmit={this.handleSubmission.bind(this)} />
-    <CowList cows={this.state.cows}/>
+
+    <CowList cows={this.state.cows} handleCowChange={this.handleCowChange.bind(this)}/>
     </div>
     );
   }
