@@ -38,14 +38,29 @@ app.get('/', (req, res) => res.send('Hello World!'))
 
 app.get('/api/cows', (req,res) => {
   // Run function at this path
-  Controllers.getAll(req, res);
+  Controllers.getAll() // returns a promise
+  .then((results) => {
+    res.status(201).json(results)
+  })
+  .catch((err) => {
+    console.log("Error in 'getAll' function! Error: ", err);
+  })
+
   //res.json({"Congrats!":"This GET request works!"});
 })
 
 app.post('/api/cows', (req, res) => {
   // write post in controller
   // run function
-  Controllers.post(req, res);
+  Controllers.post(req)
+  .then((result) => {
+    // return inserted row
+    res.status(201).json({name: result.dataValues.name, description: result.dataValues.description});
+  })
+  .catch((err) => {
+    console.log("Error in your post method! Error: ", err)
+    res.status(500).send("not good")
+  })
   //res.json({"Congrats!":"This POST request works!"});
 })
 

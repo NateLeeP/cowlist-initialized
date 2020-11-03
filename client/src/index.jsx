@@ -38,6 +38,8 @@ class CowAdd extends React.Component {
     }
   }
 
+
+
   handleChangeName(event) {
     // event.target.value
     this.setState({name: event.target.value});
@@ -53,6 +55,10 @@ class CowAdd extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.handleFormSubmit(this.state.name, this.state.description);
+  }
+
+  componentDidMount() {
+
   }
 
 
